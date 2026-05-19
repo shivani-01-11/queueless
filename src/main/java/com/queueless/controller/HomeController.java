@@ -118,4 +118,33 @@ public class HomeController {
         return "ticket-success";
     }
 
+    @GetMapping("/call-next")
+    public String callNextCustomer(Model model) {
+
+        QueueSession session =
+                queueSessionRepository
+                        .findTopByOrderByIdDesc();
+
+        QueueTicket ticket =
+                queueTicketService
+                        .callNextTicket(session);
+
+        if (ticket == null) {
+
+            model.addAttribute(
+                    "message",
+                    "No waiting customers"
+            );
+
+            return "success";
+        }
+
+        model.addAttribute(
+                "ticket",
+                ticket
+        );
+
+        return "call-ticket";
+    }
+
 }

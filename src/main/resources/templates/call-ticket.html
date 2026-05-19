@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Calling Customer</title>
+</head>
+<body>
+
+<h1>Now Calling</h1>
+
+<h2 th:text="${ticket.tokenNumber}"></h2>
+
+<p>
+  Status:
+  <span th:text="${ticket.status}"></span>
+</p>
+
+</body>
+</html>

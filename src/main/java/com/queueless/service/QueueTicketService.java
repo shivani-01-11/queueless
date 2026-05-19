@@ -8,4 +8,8 @@ public interface QueueTicketService {
 
     QueueTicket createTicket(User customer,
                              QueueSession queueSession);
+
+    QueueTicket callNextTicket(
+            QueueSession queueSession
+    );
 }

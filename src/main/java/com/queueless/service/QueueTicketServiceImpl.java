@@ -6,7 +6,7 @@ import com.queueless.entity.User;
 import com.queueless.enums.QueueTicketStatus;
 import com.queueless.repository.QueueTicketRepository;
 import org.springframework.stereotype.Service;
-
+import java.util.Optional;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -50,5 +50,32 @@ public class QueueTicketServiceImpl
                         .toString()
                         .substring(0, 5)
                         .toUpperCase();
+    }
+
+
+    @Override
+    public QueueTicket callNextTicket(
+            QueueSession queueSession) {
+
+        QueueTicket ticket =
+                queueTicketRepository
+                        .findFirstByQueueSessionAndStatusOrderByJoinedAtAsc(
+                                queueSession,
+                                QueueTicketStatus.WAITING
+                        );
+
+        if (ticket == null) {
+            return null;
+        }
+
+        ticket.setStatus(
+                QueueTicketStatus.CALLED
+        );
+
+        ticket.setCalledAt(
+                LocalDateTime.now()
+        );
+
+        return queueTicketRepository.save(ticket);
     }
 }
