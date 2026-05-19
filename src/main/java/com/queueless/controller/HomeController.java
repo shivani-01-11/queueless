@@ -92,9 +92,10 @@ public class HomeController {
 
         QueueSession session =
                 queueSessionRepository
-                        .findById(1L)
-                        .orElse(null);
+                        .findTopByOrderByIdDesc();
+        System.out.println(customer);
 
+        System.out.println(session);
         if (customer == null || session == null) {
 
             model.addAttribute(
