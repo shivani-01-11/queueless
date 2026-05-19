@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Queue Joined</title>
+</head>
+<body>
+
+<h1>Queue Joined Successfully</h1>
+
+<p>
+  Your Token:
+  <span th:text="${ticket.tokenNumber}"></span>
+</p>
+
+<p>
+  Estimated Wait:
+  <span th:text="${ticket.estimatedWaitTime}"></span>
+  minutes
+</p>
+
+<p>
+  Status:
+  <span th:text="${ticket.status}"></span>
+</p>
+
+</body>
+</html>
