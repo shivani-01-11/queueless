@@ -147,4 +147,39 @@ public class HomeController {
         return "call-ticket";
     }
 
+
+    @GetMapping("/start-service/{id}")
+    public String startService(
+            @PathVariable Long id,
+            Model model) {
+
+        QueueTicket ticket =
+                queueTicketService
+                        .startService(id);
+
+        model.addAttribute(
+                "ticket",
+                ticket
+        );
+
+        return "call-ticket";
+    }
+
+    @GetMapping("/complete-service/{id}")
+    public String completeService(
+            @PathVariable Long id,
+            Model model) {
+
+        QueueTicket ticket =
+                queueTicketService
+                        .completeService(id);
+
+        model.addAttribute(
+                "ticket",
+                ticket
+        );
+
+        return "call-ticket";
+    }
+
 }

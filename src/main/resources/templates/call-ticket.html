@@ -14,5 +14,17 @@
   <span th:text="${ticket.status}"></span>
 </p>
 
+<br><br>
+
+<a th:href="@{/start-service/{id}(id=${ticket.id})}">
+  Start Service
+</a>
+
+<br><br>
+
+<a th:href="@{/complete-service/{id}(id=${ticket.id})}">
+  Complete Service
+</a>
+
 </body>
 </html>

@@ -12,4 +12,8 @@ public interface QueueTicketService {
     QueueTicket callNextTicket(
             QueueSession queueSession
     );
+
+    QueueTicket startService(Long ticketId);
+
+    QueueTicket completeService(Long ticketId);
 }

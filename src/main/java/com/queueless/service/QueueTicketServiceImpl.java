@@ -78,4 +78,50 @@ public class QueueTicketServiceImpl
 
         return queueTicketRepository.save(ticket);
     }
+
+    @Override
+    public QueueTicket startService(Long ticketId) {
+
+        QueueTicket ticket =
+                queueTicketRepository
+                        .findById(ticketId)
+                        .orElse(null);
+
+        if (ticket == null) {
+            return null;
+        }
+
+        ticket.setStatus(
+                QueueTicketStatus.SERVING
+        );
+
+        ticket.setServiceStartedAt(
+                LocalDateTime.now()
+        );
+
+        return queueTicketRepository.save(ticket);
+    }
+
+    @Override
+    public QueueTicket completeService(Long ticketId) {
+
+        QueueTicket ticket =
+                queueTicketRepository
+                        .findById(ticketId)
+                        .orElse(null);
+
+        if (ticket == null) {
+            return null;
+        }
+
+        ticket.setStatus(
+                QueueTicketStatus.COMPLETED
+        );
+
+        ticket.setCompletedAt(
+                LocalDateTime.now()
+        );
+
+        return queueTicketRepository.save(ticket);
+    }
 }
