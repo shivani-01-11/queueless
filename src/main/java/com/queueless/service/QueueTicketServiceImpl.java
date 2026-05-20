@@ -2,6 +2,7 @@ package com.queueless.service;
 
 import com.queueless.dto.QueueDashboardDto;
 import com.queueless.dto.QueueTicketViewDto;
+import com.queueless.dto.QueueTrackingDto;
 import com.queueless.entity.QueueSession;
 import com.queueless.entity.QueueTicket;
 import com.queueless.entity.User;
@@ -79,6 +80,17 @@ public class QueueTicketServiceImpl
     public QueueTicket callNextTicket(
             QueueSession queueSession) {
 
+        boolean alreadyCalled =
+                queueTicketRepository
+                        .existsByQueueSessionAndStatus(
+                                queueSession,
+                                QueueTicketStatus.CALLED
+                        );
+
+        if (alreadyCalled) {
+            return null;
+        }
+        
         QueueTicket ticket =
                 queueTicketRepository
                         .findFirstByQueueSessionAndStatusOrderByJoinedAtAsc(
@@ -116,6 +128,17 @@ public class QueueTicketServiceImpl
         if (ticket.getStatus()
                 != QueueTicketStatus.CALLED) {
 
+            return null;
+        }
+
+        boolean alreadyServing =
+                queueTicketRepository
+                        .existsByQueueSessionAndStatus(
+                                ticket.getQueueSession(),
+                                QueueTicketStatus.SERVING
+                        );
+
+        if (alreadyServing) {
             return null;
         }
         ticket.setStatus(
@@ -229,5 +252,118 @@ public class QueueTicketServiceImpl
         );
 
         return dashboard;
+    }
+
+
+    @Override
+    public QueueTrackingDto trackTicket(
+            String tokenNumber) {
+
+        QueueTicket ticket =
+                queueTicketRepository
+                        .findByTokenNumber(
+                                tokenNumber
+                        );
+
+        if (ticket == null) {
+            return null;
+        }
+
+        QueueSession session =
+                ticket.getQueueSession();
+
+        List<QueueTicket> waitingTickets =
+                queueTicketRepository
+                        .findByQueueSessionAndStatusOrderByJoinedAtAsc(
+                                session,
+                                QueueTicketStatus.WAITING
+                        );
+
+        int position = 0;
+
+        for (int i = 0;
+             i < waitingTickets.size();
+             i++) {
+
+            if (waitingTickets.get(i)
+                    .getId()
+                    .equals(ticket.getId())) {
+
+                position = i + 1;
+                break;
+            }
+        }
+
+        QueueTicket servingTicket =
+                queueTicketRepository
+                        .findFirstByQueueSessionAndStatus(
+                                session,
+                                QueueTicketStatus.SERVING
+                        );
+
+        QueueTrackingDto dto =
+                new QueueTrackingDto();
+
+        dto.setTokenNumber(
+                ticket.getTokenNumber()
+        );
+
+        dto.setStatus(
+                ticket.getStatus()
+        );
+
+        dto.setPosition(position);
+
+        if (ticket.getStatus()
+                == QueueTicketStatus.COMPLETED
+
+                ||
+
+                ticket.getStatus()
+                        == QueueTicketStatus.MISSED) {
+
+            dto.setEstimatedWaitTime(0);
+
+        } else {
+
+            dto.setEstimatedWaitTime(
+                    ticket.getEstimatedWaitTime()
+            );
+        }
+
+        if (servingTicket != null) {
+
+            dto.setCurrentServingToken(
+                    servingTicket.getTokenNumber()
+            );
+        }
+
+        return dto;
+    }
+
+    @Override
+    public QueueTicket markTicketAsMissed(
+            Long ticketId) {
+
+        QueueTicket ticket =
+                queueTicketRepository
+                        .findById(ticketId)
+                        .orElse(null);
+
+        if (ticket == null) {
+            return null;
+        }
+
+        if (ticket.getStatus()
+                != QueueTicketStatus.CALLED) {
+
+            return null;
+        }
+
+        ticket.setStatus(
+                QueueTicketStatus.MISSED
+        );
+
+        return queueTicketRepository.save(ticket);
     }
 }

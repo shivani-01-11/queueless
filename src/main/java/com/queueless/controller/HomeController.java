@@ -1,6 +1,7 @@
 package com.queueless.controller;
 
 import com.queueless.dto.QueueDashboardDto;
+import com.queueless.dto.QueueTrackingDto;
 import com.queueless.dto.UserRegistrationDto;
 import com.queueless.entity.*;
 import com.queueless.enums.QueueSessionStatus;
@@ -134,7 +135,7 @@ public class HomeController {
 
             model.addAttribute(
                     "message",
-                    "No waiting customers"
+                    "Cannot call next ticket right now"
             );
 
             return "success";
@@ -221,6 +222,60 @@ public class HomeController {
         );
 
         return "dashboard";
+    }
+
+    @GetMapping("/track/{token}")
+    public String trackTicket(
+            @PathVariable String token,
+            Model model) {
+
+        QueueTrackingDto tracking =
+                queueTicketService
+                        .trackTicket(token);
+
+        if (tracking == null) {
+
+            model.addAttribute(
+                    "message",
+                    "Ticket not found"
+            );
+
+            return "success";
+        }
+
+        model.addAttribute(
+                "tracking",
+                tracking
+        );
+
+        return "track-ticket";
+    }
+
+    @GetMapping("/miss-ticket/{id}")
+    public String missTicket(
+            @PathVariable Long id,
+            Model model) {
+
+        QueueTicket ticket =
+                queueTicketService
+                        .markTicketAsMissed(id);
+
+        if (ticket == null) {
+
+            model.addAttribute(
+                    "message",
+                    "Invalid missed transition"
+            );
+
+            return "success";
+        }
+
+        model.addAttribute(
+                "ticket",
+                ticket
+        );
+
+        return "call-ticket";
     }
 
 }

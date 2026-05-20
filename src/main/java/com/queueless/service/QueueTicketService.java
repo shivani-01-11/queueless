@@ -1,6 +1,7 @@
 package com.queueless.service;
 
 import com.queueless.dto.QueueDashboardDto;
+import com.queueless.dto.QueueTrackingDto;
 import com.queueless.entity.QueueSession;
 import com.queueless.entity.QueueTicket;
 import com.queueless.entity.User;
@@ -20,5 +21,12 @@ public interface QueueTicketService {
 
     QueueDashboardDto getDashboardData(
             QueueSession queueSession
+    );
+
+    QueueTrackingDto trackTicket(
+            String tokenNumber
+    );
+    QueueTicket markTicketAsMissed(
+            Long ticketId
     );
 }

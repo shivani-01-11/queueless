@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title>Calling Customer</title>
+    <title>Calling Customer</title>
 </head>
 <body>
 
@@ -10,20 +10,29 @@
 <h2 th:text="${ticket.tokenNumber}"></h2>
 
 <p>
-  Status:
-  <span th:text="${ticket.status}"></span>
+    Status:
+    <span th:text="${ticket.status}"></span>
 </p>
 
 <br><br>
 
 <a th:href="@{/start-service/{id}(id=${ticket.id})}">
-  Start Service
+    Start Service
 </a>
 
 <br><br>
 
 <a th:href="@{/complete-service/{id}(id=${ticket.id})}">
-  Complete Service
+    Complete Service
+</a>
+
+<br><br>
+
+<a th:href=
+           "@{/miss-ticket/{id}(id=${ticket.id})}">
+
+    Mark As Missed
+
 </a>
 
 </body>

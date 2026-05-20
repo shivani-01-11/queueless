@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Track Queue</title>
+</head>
+<body>
+
+<h1>Queue Tracking</h1>
+
+<p>
+  Token:
+  <span th:text=
+                "${tracking.tokenNumber}">
+    </span>
+</p>
+
+<p>
+  Status:
+  <span th:text=
+                "${tracking.status}">
+    </span>
+</p>
+
+<p>
+  Queue Position:
+  <span th:text=
+                "${tracking.position}">
+    </span>
+</p>
+
+<p>
+  Estimated Wait:
+  <span th:text=
+                "${tracking.estimatedWaitTime}">
+    </span>
+  mins
+</p>
+
+<p>
+  Currently Serving:
+  <span th:text=
+                "${tracking.currentServingToken}">
+    </span>
+</p>
+
+</body>
+</html>   

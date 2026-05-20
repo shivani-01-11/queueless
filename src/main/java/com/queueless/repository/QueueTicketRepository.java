@@ -33,4 +33,13 @@ public interface QueueTicketRepository
             QueueSession queueSession,
             QueueTicketStatus status
     );
+
+    QueueTicket findByTokenNumber(
+            String tokenNumber
+    );
+
+    boolean existsByQueueSessionAndStatus(
+            QueueSession queueSession,
+            QueueTicketStatus status
+    );
 }
