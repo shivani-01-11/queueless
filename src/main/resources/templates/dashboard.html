@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title>Queue Dashboard</title>
+    <title>Queue Dashboard</title>
 </head>
 <body>
 
@@ -11,17 +11,17 @@
 
 <div th:if="${dashboard.currentServingTicket != null}">
 
-  <p>
-    Token:
-    <span th:text=
-                  "${dashboard.currentServingTicket.tokenNumber}">
+    <p>
+        Token:
+        <span th:text=
+                      "${dashboard.currentServingTicket.tokenNumber}">
         </span>
-  </p>
+    </p>
 
 </div>
 
 <div th:if="${dashboard.currentServingTicket == null}">
-  <p>No customer currently serving</p>
+    <p>No customer currently serving</p>
 </div>
 
 <hr>
@@ -29,13 +29,13 @@
 <h2>Queue Statistics</h2>
 
 <p>
-  Waiting Customers:
-  <span th:text="${dashboard.waitingCount}"></span>
+    Waiting Customers:
+    <span th:text="${dashboard.waitingCount}"></span>
 </p>
 
 <p>
-  Completed Customers:
-  <span th:text="${dashboard.completedCount}"></span>
+    Completed Customers:
+    <span th:text="${dashboard.completedCount}"></span>
 </p>
 
 <hr>
@@ -44,21 +44,22 @@
 
 <table border="1">
 
-  <tr>
-    <th>Token</th>
-    <th>Estimated Wait</th>
-  </tr>
+    <tr>
+        <th>Position</th>
+        <th>Token</th>
+        <th>Estimated Wait</th>
+    </tr>
 
-  <tr th:each="ticket :
+    <tr th:each="ticket :
             ${dashboard.waitingTickets}">
 
-    <td th:text="${ticket.tokenNumber}"></td>
+        <td th:text="${ticket.position}"></td>
 
-    <td th:text=
-                "${ticket.estimatedWaitTime}">
-    </td>
+        <td th:text="${ticket.tokenNumber}"></td>
 
-  </tr>
+        <td th:text="${ticket.estimatedWaitTime}"></td>
+        
+    </tr>
 
 </table>
 

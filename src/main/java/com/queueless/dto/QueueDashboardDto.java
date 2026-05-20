@@ -8,7 +8,7 @@ public class QueueDashboardDto {
 
     private QueueTicket currentServingTicket;
 
-    private List<QueueTicket> waitingTickets;
+    private List<QueueTicketViewDto> waitingTickets;
 
     private long waitingCount;
 
@@ -25,12 +25,12 @@ public class QueueDashboardDto {
                 currentServingTicket;
     }
 
-    public List<QueueTicket> getWaitingTickets() {
+    public List<QueueTicketViewDto> getWaitingTickets() {
         return waitingTickets;
     }
 
     public void setWaitingTickets(
-            List<QueueTicket> waitingTickets) {
+            List<QueueTicketViewDto> waitingTickets) {
 
         this.waitingTickets = waitingTickets;
     }

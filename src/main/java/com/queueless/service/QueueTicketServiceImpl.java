@@ -1,6 +1,7 @@
 package com.queueless.service;
 
 import com.queueless.dto.QueueDashboardDto;
+import com.queueless.dto.QueueTicketViewDto;
 import com.queueless.entity.QueueSession;
 import com.queueless.entity.QueueTicket;
 import com.queueless.entity.User;
@@ -8,6 +9,7 @@ import com.queueless.enums.QueueTicketStatus;
 import com.queueless.repository.QueueTicketRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.time.LocalDateTime;
@@ -176,6 +178,32 @@ public class QueueTicketServiceImpl
                                 queueSession,
                                 QueueTicketStatus.WAITING
                         );
+        List<QueueTicketViewDto>
+                waitingTicketViews =
+                new ArrayList<>();
+
+        for (int i = 0;
+             i < waitingTickets.size();
+             i++) {
+
+            QueueTicket ticket =
+                    waitingTickets.get(i);
+
+            QueueTicketViewDto dto =
+                    new QueueTicketViewDto();
+
+            dto.setTokenNumber(
+                    ticket.getTokenNumber()
+            );
+
+            dto.setEstimatedWaitTime(
+                    ticket.getEstimatedWaitTime()
+            );
+
+            dto.setPosition(i + 1);
+
+            waitingTicketViews.add(dto);
+        }
 
         long completedCount =
                 queueTicketRepository
@@ -189,7 +217,7 @@ public class QueueTicketServiceImpl
         );
 
         dashboard.setWaitingTickets(
-                waitingTickets
+                waitingTicketViews
         );
 
         dashboard.setWaitingCount(
