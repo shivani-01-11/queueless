@@ -158,6 +158,16 @@ public class HomeController {
                 queueTicketService
                         .startService(id);
 
+        if (ticket == null) {
+
+            model.addAttribute(
+                    "message",
+                    "Invalid ticket transition"
+            );
+
+            return "success";
+        }
+
         model.addAttribute(
                 "ticket",
                 ticket
@@ -174,6 +184,16 @@ public class HomeController {
         QueueTicket ticket =
                 queueTicketService
                         .completeService(id);
+
+        if (ticket == null) {
+
+            model.addAttribute(
+                    "message",
+                    "Invalid ticket transition"
+            );
+
+            return "success";
+        }
 
         model.addAttribute(
                 "ticket",

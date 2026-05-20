@@ -111,6 +111,11 @@ public class QueueTicketServiceImpl
             return null;
         }
 
+        if (ticket.getStatus()
+                != QueueTicketStatus.CALLED) {
+
+            return null;
+        }
         ticket.setStatus(
                 QueueTicketStatus.SERVING
         );
@@ -131,6 +136,12 @@ public class QueueTicketServiceImpl
                         .orElse(null);
 
         if (ticket == null) {
+            return null;
+        }
+
+        if (ticket.getStatus()
+                != QueueTicketStatus.SERVING) {
+
             return null;
         }
 
