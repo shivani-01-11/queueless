@@ -1,5 +1,6 @@
 package com.queueless.controller;
 
+import com.queueless.dto.QueueDashboardDto;
 import com.queueless.dto.UserRegistrationDto;
 import com.queueless.entity.*;
 import com.queueless.enums.QueueSessionStatus;
@@ -180,6 +181,26 @@ public class HomeController {
         );
 
         return "call-ticket";
+    }
+
+
+    @GetMapping("/dashboard")
+    public String showDashboard(Model model) {
+
+        QueueSession session =
+                queueSessionRepository
+                        .findTopByOrderByIdDesc();
+
+        QueueDashboardDto dashboard =
+                queueTicketService
+                        .getDashboardData(session);
+
+        model.addAttribute(
+                "dashboard",
+                dashboard
+        );
+
+        return "dashboard";
     }
 
 }

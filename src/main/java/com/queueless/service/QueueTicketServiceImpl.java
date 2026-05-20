@@ -1,11 +1,14 @@
 package com.queueless.service;
 
+import com.queueless.dto.QueueDashboardDto;
 import com.queueless.entity.QueueSession;
 import com.queueless.entity.QueueTicket;
 import com.queueless.entity.User;
 import com.queueless.enums.QueueTicketStatus;
 import com.queueless.repository.QueueTicketRepository;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 import java.util.Optional;
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -36,7 +39,24 @@ public class QueueTicketServiceImpl
 
         ticket.setJoinedAt(LocalDateTime.now());
 
-        ticket.setEstimatedWaitTime(15);
+        long waitingCount =
+                queueTicketRepository
+                        .countByQueueSessionAndStatus(
+                                queueSession,
+                                QueueTicketStatus.WAITING
+                        );
+
+        Integer averageTime =
+                queueSession
+                        .getServiceType()
+                        .getAverageServiceTime();
+
+        int estimatedWait =
+                (int) waitingCount * averageTime;
+
+        ticket.setEstimatedWaitTime(
+                estimatedWait
+        );
 
         ticket.setTokenNumber(generateToken());
 
@@ -123,5 +143,52 @@ public class QueueTicketServiceImpl
         );
 
         return queueTicketRepository.save(ticket);
+    }
+
+    @Override
+    public QueueDashboardDto getDashboardData(
+            QueueSession queueSession) {
+
+        QueueDashboardDto dashboard =
+                new QueueDashboardDto();
+
+        QueueTicket servingTicket =
+                queueTicketRepository
+                        .findFirstByQueueSessionAndStatus(
+                                queueSession,
+                                QueueTicketStatus.SERVING
+                        );
+
+        List<QueueTicket> waitingTickets =
+                queueTicketRepository
+                        .findByQueueSessionAndStatusOrderByJoinedAtAsc(
+                                queueSession,
+                                QueueTicketStatus.WAITING
+                        );
+
+        long completedCount =
+                queueTicketRepository
+                        .countByQueueSessionAndStatus(
+                                queueSession,
+                                QueueTicketStatus.COMPLETED
+                        );
+
+        dashboard.setCurrentServingTicket(
+                servingTicket
+        );
+
+        dashboard.setWaitingTickets(
+                waitingTickets
+        );
+
+        dashboard.setWaitingCount(
+                waitingTickets.size()
+        );
+
+        dashboard.setCompletedCount(
+                completedCount
+        );
+
+        return dashboard;
     }
 }

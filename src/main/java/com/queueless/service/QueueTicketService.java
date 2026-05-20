@@ -1,5 +1,6 @@
 package com.queueless.service;
 
+import com.queueless.dto.QueueDashboardDto;
 import com.queueless.entity.QueueSession;
 import com.queueless.entity.QueueTicket;
 import com.queueless.entity.User;
@@ -16,4 +17,8 @@ public interface QueueTicketService {
     QueueTicket startService(Long ticketId);
 
     QueueTicket completeService(Long ticketId);
+
+    QueueDashboardDto getDashboardData(
+            QueueSession queueSession
+    );
 }
