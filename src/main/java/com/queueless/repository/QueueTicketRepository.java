@@ -42,4 +42,8 @@ public interface QueueTicketRepository
             QueueSession queueSession,
             QueueTicketStatus status
     );
+
+    List<QueueTicket> findByQueueSession(
+            QueueSession queueSession
+    );
 }

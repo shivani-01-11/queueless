@@ -90,7 +90,7 @@ public class QueueTicketServiceImpl
         if (alreadyCalled) {
             return null;
         }
-        
+
         QueueTicket ticket =
                 queueTicketRepository
                         .findFirstByQueueSessionAndStatusOrderByJoinedAtAsc(
@@ -201,9 +201,38 @@ public class QueueTicketServiceImpl
                                 queueSession,
                                 QueueTicketStatus.WAITING
                         );
+
+        List<QueueTicket> allTickets =
+                queueTicketRepository
+                        .findByQueueSession(
+                                queueSession
+                        );
+        long missedCount =
+                allTickets.stream()
+                        .filter(ticket ->
+                                ticket.getStatus()
+                                        == QueueTicketStatus.MISSED
+                        )
+                        .count();
+        double averageWaitTime =
+                allTickets.stream()
+
+                        .filter(ticket ->
+                                ticket.getEstimatedWaitTime()
+                                        != null
+                        )
+
+                        .mapToInt(
+                                QueueTicket::getEstimatedWaitTime
+                        )
+
+                        .average()
+
+                        .orElse(0);
         List<QueueTicketViewDto>
                 waitingTicketViews =
                 new ArrayList<>();
+
 
         for (int i = 0;
              i < waitingTickets.size();
@@ -249,6 +278,13 @@ public class QueueTicketServiceImpl
 
         dashboard.setCompletedCount(
                 completedCount
+        );
+        dashboard.setMissedCount(
+                missedCount
+        );
+
+        dashboard.setAverageWaitTime(
+                averageWaitTime
         );
 
         return dashboard;

@@ -38,10 +38,25 @@
     <span th:text="${dashboard.completedCount}"></span>
 </p>
 
+<p>
+    Missed Customers:
+    <span th:text=
+                  "${dashboard.missedCount}">
+    </span>
+</p>
+
+<p>
+    Average Estimated Wait:
+    <span th:text=
+                  "${dashboard.averageWaitTime}">
+    </span>
+    mins
+</p>
+
 <hr>
 
 <h2>Waiting Queue</h2>
-
+x
 <table border="1">
 
     <tr>
@@ -58,7 +73,7 @@
         <td th:text="${ticket.tokenNumber}"></td>
 
         <td th:text="${ticket.estimatedWaitTime}"></td>
-        
+
     </tr>
 
 </table>

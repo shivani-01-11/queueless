@@ -14,6 +14,26 @@ public class QueueDashboardDto {
 
     private long completedCount;
 
+    public long getMissedCount() {
+        return missedCount;
+    }
+
+    public void setMissedCount(long missedCount) {
+        this.missedCount = missedCount;
+    }
+
+    public double getAverageWaitTime() {
+        return averageWaitTime;
+    }
+
+    public void setAverageWaitTime(double averageWaitTime) {
+        this.averageWaitTime = averageWaitTime;
+    }
+
+    private long missedCount;
+
+    private double averageWaitTime;
+
     public QueueTicket getCurrentServingTicket() {
         return currentServingTicket;
     }
