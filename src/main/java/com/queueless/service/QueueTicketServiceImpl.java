@@ -6,6 +6,7 @@ import com.queueless.dto.QueueTrackingDto;
 import com.queueless.entity.QueueSession;
 import com.queueless.entity.QueueTicket;
 import com.queueless.entity.User;
+import com.queueless.enums.QueueSessionStatus;
 import com.queueless.enums.QueueTicketStatus;
 import com.queueless.repository.QueueTicketRepository;
 import org.springframework.stereotype.Service;
@@ -32,6 +33,11 @@ public class QueueTicketServiceImpl
     public QueueTicket createTicket(User customer,
                                     QueueSession queueSession) {
 
+        if (queueSession.getStatus()
+                != QueueSessionStatus.OPEN) {
+
+            return null;
+        }
         QueueTicket ticket = new QueueTicket();
 
         ticket.setCustomer(customer);
