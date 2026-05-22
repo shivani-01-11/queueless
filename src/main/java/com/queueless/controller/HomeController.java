@@ -375,4 +375,10 @@ public class HomeController {
         return "success";
     }
 
+    @GetMapping("/access-denied")
+    public String accessDeniedPage() {
+
+        return "access-denied";
+    }
+
 }
