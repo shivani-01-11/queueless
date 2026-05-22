@@ -1,12 +1,39 @@
+<!--<!DOCTYPE html>-->
+<!--<html>-->
+<!--<head>-->
+<!--  <title>QueueLess</title>-->
+<!--</head>-->
+<!--<body>-->
+
+<!--<h1>QueueLess</h1>-->
+<!--<p>Queue intelligence platform</p>-->
+
+<!--</body>-->
+<!--</html>-->
+
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
+
 <head>
   <title>QueueLess</title>
 </head>
+
 <body>
 
-<h1>QueueLess</h1>
-<p>Queue intelligence platform</p>
+<div th:replace=
+             "~{fragments/navbar :: navbar}">
+</div>
+
+<h1>Welcome To QueueLess</h1>
+
+<p>
+  Smart Queue Management System
+</p>
+
+<p>
+  Use the navigation menu
+  to access queue operations.
+</p>
 
 </body>
 </html>
